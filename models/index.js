@@ -1,5 +1,5 @@
 var Pet = require("./pet.js");
 
-exports = {
+module.exports = {
     Pet : Pet
 }
