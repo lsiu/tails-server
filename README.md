@@ -7,3 +7,7 @@ Setup Development Environment
 -----------------------------
 
 npm install .
+
+Start Server
+------------
+node server.js

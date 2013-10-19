@@ -1,4 +1,6 @@
 *.class
+.idea
+node_modules
 
 # Package Files #
 *.jar
