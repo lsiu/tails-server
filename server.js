@@ -10,6 +10,9 @@ var app = express();
 app.set('port', port);
 app.set('ipaddr', ipaddr);
 
+// temp
+app.use('/mockjson', express.static(__dirname + '/mockjson'));
+
 app.get('/*', function(req, res){
   var body = 'Hello World';
   res.setHeader('Content-Type', 'text/plain');
