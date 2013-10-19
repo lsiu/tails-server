@@ -5,5 +5,7 @@
   "dependencies": {
     "express": "",
     "mongoose": ""
+  },
+  "devDependencies" : {
   }
 }
