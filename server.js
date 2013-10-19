@@ -7,12 +7,12 @@ var pet = require("./views/pet.js");
 
 //Get the environment variables we need.
 var ipaddr  = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
-var port    = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+var port    = parseInt(process.env.OPENSHIFT_NODEJS_PORT) || 8080;
 var db  = {
     username : process.env.OPENSHIFT_MONGODB_DB_USERNAME || "",
     password : process.env.OPENSHIFT_MONGODB_DB_PASSWORD || "",
     host : process.env.OPENSHIFT_MONGODB_DB_HOST || "localhost" ,
-    port :process.env.OPENSHIFT_MONGODB_DB_PORT || 27019 ,
+    port :process.env.OPENSHIFT_MONGODB_DB_PORT || 27017 ,
     collection : process.env.OPENSHIFT_APP_NAME || "tails"
 };
 
@@ -51,19 +51,19 @@ app.use('/mockjson', express.static(__dirname + '/mockjson'));
 //static page
 app.use(express.static(__dirname + '/static'));
 
-//app.get('/*', function(req, res){
-  //var body = 'Hello World';
-  //res.setHeader('Content-Type', 'text/plain');
-  //res.setHeader('Content-Length', body.length);
-  //res.end(body);
-//});
-
 app.get('/pet', pet.get);    
 app.get('/pet/:id', pet.get);
 app.get('/pet/:id/img', pet.getImage);
 
 app.post('/pet',pet.post);
 
-app.listen(app.get('port'));
+app.get('/*', function(req, res){
+  var body = 'Hello World';
+  res.setHeader('Content-Type', 'text/plain');
+  res.setHeader('Content-Length', body.length);
+  res.end(body);
+});
 
-console.log("Server running at http://" + ipaddr + ":" + port + "/");
+app.listen(port, ipaddr, function(){
+	console.log('%s: Node server started on %s:%d ...', Date(Date.now()), ipaddr, port);
+});
