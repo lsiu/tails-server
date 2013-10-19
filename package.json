@@ -3,9 +3,10 @@
   "description": "tails",
   "version": "0.0.1",
   "dependencies": {
-    "express": "",
-    "mongoose": ""
+    "express": "~3.4.2",
+    "mongoose": "~3.6.20"
   },
-  "devDependencies" : {
+  "devDependencies": {
+    "supertest": "~0.8.0"
   }
 }
