@@ -3,6 +3,8 @@ var express = require('express'),
     util = require("util"),
     mongoose = require('mongoose');
 
+var pet = require("./views/pet.js");
+
 //Get the environment variables we need.
 var ipaddr  = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
 var port    = process.env.OPENSHIFT_NODEJS_PORT || 8080;
@@ -46,12 +48,16 @@ app.set('ipaddr', ipaddr);
 // temp
 app.use('/mockjson', express.static(__dirname + '/mockjson'));
 
-app.get('/*', function(req, res){
+app.get('/', function(req, res){
   var body = 'Hello World';
   res.setHeader('Content-Type', 'text/plain');
   res.setHeader('Content-Length', body.length);
   res.end(body);
 });
+
+app.get('/pet', pet.get);    
+app.get('/pet/:id', pet.get);
+app.post('/pet',pet.post);
 
 app.listen(app.get('port'));
 

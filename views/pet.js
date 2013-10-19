@@ -23,9 +23,7 @@ var post = function(req,res,next) {
         
         // Read from local file        
         // Dirty hack for quick prototype
-        fs.readFile(req.files.image.path,function(err,data) {
-            console.log("Read file",err);
-           
+        fs.readFile(req.files.image.path,function(err,data) {           
             if (err != null ) {
                 p.reject();
                 res.send(500); // FIXME: Improve the handling later
