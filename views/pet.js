@@ -1,12 +1,22 @@
 'use strict'
 
 var models = require("../models"),
+    swig = require("swig"),
     fs = require("fs"),
     promise = require('promised-io/promise');
 
 var get = function(req,res) {
+    if (req.files === undefined ||
+        req.files.image === undefined) {
+        res.send(412);
+        res.end();
+        return;
+    }
 
-    res.end();
+    var body = 'Hello World';
+    res.setHeader('Content-Type', 'text/plain');
+    res.setHeader('Content-Length', body.length);
+    res.end(body);
 }
 
 var post = function(req,res,next) {
