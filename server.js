@@ -1,9 +1,49 @@
+<<<<<<< HEAD
 //var http = require("http");
 var express = require('express');
+=======
+var http = require("http");
+var express = require('express'),
+    util = require("util"),
+    mongoose = require('mongoose');
+
+var pet = require("./views/pet.js");
+>>>>>>> 352c64a3a2599ac2f07912037663b6fe91895443
 
 //Get the environment variables we need.
 var ipaddr  = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
 var port    = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+var db  = {
+    username : process.env.OPENSHIFT_MONGODB_DB_USERNAME || "",
+    password : process.env.OPENSHIFT_MONGODB_DB_PASSWORD || "",
+    host : process.env.OPENSHIFT_MONGODB_DB_HOST || "localhost" ,
+    port :process.env.OPENSHIFT_MONGODB_DB_PORT || 27019 ,
+    collection : process.env.OPENSHIFT_APP_NAME || "tails"
+};
+
+
+/* Database Initialization */
+
+mongoose.connection
+.on('error', console.error.bind(console, 'mongodb connection error:'))
+.once('open', function () {
+    console.log("mongodb connection establish");
+});
+
+(function() {
+    
+    var connection = util.format('mongodb://%s:%s@%s:%d/%s', 
+                                 db.username ,
+                                 db.password,
+                                 db.host, 
+                                 db.port, 
+                                 db.collection);
+    var conn = mongoose.connection;
+    mongoose.connect(connection);
+    
+})();
+
+/* Express and routing */
 
 var app = express();
 
@@ -12,7 +52,6 @@ app.set('ipaddr', ipaddr);
 
 // temp
 app.use('/mockjson', express.static(__dirname + '/mockjson'));
-
 
 //static page
 app.use(express.static(__dirname + '/static'));
@@ -23,6 +62,12 @@ app.use(express.static(__dirname + '/static'));
   //res.setHeader('Content-Length', body.length);
   //res.end(body);
 //});
+
+app.get('/pet', pet.get);    
+app.get('/pet/:id', pet.get);
+app.get('/pet/:id/img', pet.getImage);
+
+app.post('/pet',pet.post);
 
 app.listen(app.get('port'));
 

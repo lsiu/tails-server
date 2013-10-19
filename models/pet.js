@@ -10,7 +10,12 @@ var schema = new Schema({
     },
     image : {
         type : Buffer
-    }
+    },
+    creationTime: {
+        type: Date,
+        required: true,
+        default: Date.now,
+    },
 });
 
 module.exports = mongoose.model("pet", schema, "pets");
