@@ -1,9 +1,42 @@
 var http = require("http");
-var express = require('express');
+var express = require('express'),
+    util = require("util"),
+    mongoose = require('mongoose');
 
 //Get the environment variables we need.
 var ipaddr  = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
 var port    = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+var db  = {
+    username : process.env.OPENSHIFT_MONGODB_DB_USERNAME || "",
+    password : process.env.OPENSHIFT_MONGODB_DB_PASSWORD || "",
+    host : process.env.OPENSHIFT_MONGODB_DB_HOST || "localhost" ,
+    port :process.env.OPENSHIFT_MONGODB_DB_PORT || 27019 ,
+    collection : process.env.OPENSHIFT_APP_NAME || "tails"
+};
+
+
+/* Database Initialization */
+
+mongoose.connection
+.on('error', console.error.bind(console, 'mongodb connection error:'))
+.once('open', function () {
+    console.log("mongodb connection establish");
+});
+
+(function() {
+    
+    var connection = util.format('mongodb://%s:%s@%s:%d/%s', 
+                                 db.username ,
+                                 db.password,
+                                 db.host, 
+                                 db.port, 
+                                 db.collection);
+    var conn = mongoose.connection;
+    mongoose.connect(connection);
+    
+})();
+
+/* Express and routing */
 
 var app = express();
 
