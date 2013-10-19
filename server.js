@@ -3,7 +3,7 @@ var express = require('express');
 
 //Get the environment variables we need.
 var ipaddr  = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
-var port    = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+var port    = parseInt(process.env.OPENSHIFT_NODEJS_PORT) || 8080;
 
 var app = express();
 
@@ -20,6 +20,7 @@ app.get('/*', function(req, res){
   res.end(body);
 });
 
-app.listen(app.get('port'));
+app.listen(port, ipaddr, function(){
+	console.log('%s: Node server started on %s:%d ...', Date(Date.now()), ipaddr, port);
+});
 
-console.log("Server running at http://" + ipaddr + ":" + port + "/");
