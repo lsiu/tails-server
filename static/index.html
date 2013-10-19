@@ -89,13 +89,13 @@
 							var nowtime = new Date().getTime();
 
 							nowtimestring = nowtime.toString();
-
+							
 							//var profileID = CryptoJS.MD5(nowtimestring);
 
 							qrcode.clear();
 							dogqrcode.clear();
-							qrcode.makeCode(nowtimestring);
-							dogqrcode.makeCode(nowtimestring);
+							qrcode.makeCode(nowtimestring + '0' );
+							dogqrcode.makeCode(nowtimestring + '1');
 
 						});
 					});
