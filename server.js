@@ -57,6 +57,8 @@ app.get('/', function(req, res){
 
 app.get('/pet', pet.get);    
 app.get('/pet/:id', pet.get);
+app.get('/pet/:id/img', pet.getImage);
+
 app.post('/pet',pet.post);
 
 app.listen(app.get('port'));

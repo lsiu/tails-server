@@ -59,6 +59,49 @@ var post = function(req,res,next) {
     
 }
 
+function getImage(req,res,next) {
+    var id = req.params.id,
+        code = 500;
+    
+    promise.seq([function() {
+        var p = promise.defer();
+        if (id == undefined) {
+            code = 404;
+            p.reject();
+        } else {
+            code = 200;
+            p.resolve();
+        }
+        return p
+    },function() {
+        var p = promise.defer();
+        
+        models.Pet.findOne({ _id : id},function(err,doc) {
+            if (err) {
+                code = 404;
+                p.reject();
+            } else {
+                p.resolve(doc.image);
+            }
+            
+        });
+        
+        return p;
+    }
+                 
+    ]).then(function(data) {
+        res.set("Content-Type","image/jpeg");
+        res.send(code,data);
+        res.end();
+    },function() { // Error handling is not defined.
+        res.send(code);
+        res.end();    
+    });
+        
+}
+
 exports.get = get;
 
 exports.post = post;
+
+exports.getImage = getImage;
