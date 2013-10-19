@@ -13,9 +13,76 @@ var get = function(req,res) {
         return;
     }
 
-    var body = 'Hello World';
+    var id = req.params.id,
+        code = 500;
+
+    promise.seq([function() {
+        var p = promise.defer();
+        if (id == undefined) {
+            code = 404;
+            p.reject();
+        } else {
+            code = 200;
+            p.resolve();
+        }
+        return p
+    },function() {
+        var p = promise.defer();
+        
+        models.Pet.findOne({ _id : id},function(err,doc) {
+            if (err) {
+                code = 404;
+                p.reject();
+            } else {
+                p.resolve(doc);
+            }
+            
+        });
+        
+        return p;
+    }
+                 
+    ]).then(function(data) {
+    
+    
     res.setHeader('Content-Type', 'text/plain');
-    res.setHeader('Content-Length', body.length);
+    res.send(code,swig.renderFile('../templates/template.html', {
+    name: data.name,
+    type: data.type
+    }));
+     
+        
+        res.set("Content-Type","image/jpeg");
+        res.send(code,data.image);
+        res.end();
+    },function() { // Error handling is not defined.
+        res.send(code);
+        res.end();    
+    });    
+  
+    // Read the data from mongodb
+    
+    
+    // Embed into json
+    
+    // SWIG the template
+    
+    
+    // Return the result
+    
+//    var body = 'Hello World';
+//    res.setHeader('Content-Type', 'text/plain');
+//    res.setHeader('Content-Length', body.length);
+    
+//    res.set("Content-type", "image/jpeg");
+//    res.send(new Buffer(code).toString('base64'));
+
+
+    
+    
+    
+    
+    
     res.end(body);
 }
 
