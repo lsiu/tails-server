@@ -1,14 +1,9 @@
-<<<<<<< HEAD
-//var http = require("http");
-var express = require('express');
-=======
 var http = require("http");
 var express = require('express'),
     util = require("util"),
     mongoose = require('mongoose');
 
 var pet = require("./views/pet.js");
->>>>>>> 352c64a3a2599ac2f07912037663b6fe91895443
 
 //Get the environment variables we need.
 var ipaddr  = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
