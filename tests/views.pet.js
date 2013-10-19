@@ -8,6 +8,7 @@ var request = require('supertest'),
 
 db.connect();
 
+
 exports["GET PET"] = function(test) {
 
     var app = express();
@@ -52,6 +53,7 @@ exports["POST PET"] = function(test) {
       .expect(201)
       .end(function(err, res){
           //console.log(res);
+          console.log("POST finished");
           console.log(err);
           test.ok(err == null);
           test.done();
