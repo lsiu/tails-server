@@ -2,22 +2,10 @@
 
 var Pet = require("../models/pet.js"),
     util = require("util"),
-    mongoose = require("mongoose");
-    
-(function() {
-   var server = 'ds051368.mongolab.com',
-       port   = 51368 ,
-       dbname = 'tails',
-       uname = process.env.OPENSHIFT_MONGODB_DB_USERNAME ,
-       password = process.env.OPENSHIFT_MONGODB_DB_PASSWORD
-    
-    var connection = util.format('mongodb://%s:%s@%s:%d/%s', 
-                                 uname ,
-                                 password,
-                                 server, port, dbname)
-    var conn = mongoose.connection;
-    mongoose.connect(connection);
-})();
+    mongoose = require("mongoose"),
+    db = require("./db.js")
+
+db.connect();
 
 exports['create'] = function(test) {
     var pet = new Pet();
