@@ -48,12 +48,15 @@ app.set('ipaddr', ipaddr);
 // temp
 app.use('/mockjson', express.static(__dirname + '/mockjson'));
 
-app.get('/', function(req, res){
-  var body = 'Hello World';
-  res.setHeader('Content-Type', 'text/plain');
-  res.setHeader('Content-Length', body.length);
-  res.end(body);
-});
+//static page
+app.use(express.static(__dirname + '/static'));
+
+//app.get('/*', function(req, res){
+  //var body = 'Hello World';
+  //res.setHeader('Content-Type', 'text/plain');
+  //res.setHeader('Content-Length', body.length);
+  //res.end(body);
+//});
 
 app.get('/pet', pet.get);    
 app.get('/pet/:id', pet.get);
