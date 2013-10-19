@@ -6,12 +6,12 @@ var models = require("../models"),
     promise = require('promised-io/promise');
 
 var get = function(req,res) {
-    if (req.files === undefined ||
+  /*  if (req.files === undefined ||
         req.files.image === undefined) {
         res.send(412);
         res.end();
         return;
-    }
+    }*/
 
     var id = req.params.id,
         code = 500;
@@ -44,46 +44,21 @@ var get = function(req,res) {
                  
     ]).then(function(data) {
     
-    
-    res.setHeader('Content-Type', 'text/plain');
-    res.send(code,swig.renderFile('../templates/template.html', {
+    var body = swig.renderFile('templates/template.html', {
     name: data.name,
-    type: data.type
-    }));
-     
-        
-        res.set("Content-Type","image/jpeg");
-        res.send(code,data.image);
-        res.end();
+    type: data.type,
+    img: new Buffer(data.image).toString('base64')
+    });
+       
+    res.setHeader('Content-type', 'text/html');
+    res.send(code,body);
+    res.end();
+
     },function() { // Error handling is not defined.
         res.send(code);
         res.end();    
     });    
   
-    // Read the data from mongodb
-    
-    
-    // Embed into json
-    
-    // SWIG the template
-    
-    
-    // Return the result
-    
-//    var body = 'Hello World';
-//    res.setHeader('Content-Type', 'text/plain');
-//    res.setHeader('Content-Length', body.length);
-    
-//    res.set("Content-type", "image/jpeg");
-//    res.send(new Buffer(code).toString('base64'));
-
-
-    
-    
-    
-    
-    
-    res.end(body);
 }
 
 var post = function(req,res,next) {
