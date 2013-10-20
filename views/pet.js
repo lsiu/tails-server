@@ -31,7 +31,7 @@ var getonedog = function(req,res) {
     },function() {
         var p = promise.defer();
         
-        models.Pet.find(function(err,doc) {
+        models.Pet.findOne({ _id : id},function(err,doc) {
             if (err) {
                 code = 404;
                 p.reject();
@@ -80,7 +80,7 @@ var getdoglist = function(req,res) {
 
     promise.seq([function() {
         var p = promise.defer();        
-        models.Pet.find(function(err,doc) {
+        models.Pet.find({ _id : id},function(err,doc) {
             if (err) {
                 code = 404;
                 p.reject();
