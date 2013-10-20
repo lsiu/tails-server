@@ -1,0 +1,43 @@
+
+      <hr>
+
+    </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
+
+        <script src="js/bootstrap.min.js"></script>
+
+        <script src="js/qrcode.min.js"></script>
+
+		<script src="js/md5.js"></script>
+
+        <script>
+				
+					$( document ).ready(function() {
+
+							var qrcode = new QRCode("qrcode");
+							var dogqrcode = new QRCode("dogqrcode");
+
+						$('#qrgenbtn').click( function(){
+							
+							var nowtime = new Date().getTime();
+
+							nowtimestring = nowtime.toString();
+							
+							//var profileID = CryptoJS.MD5(nowtimestring);
+
+							qrcode.clear();
+							dogqrcode.clear();
+							qrcode.makeCode(nowtimestring + '0' );
+							dogqrcode.makeCode(nowtimestring + '1');
+
+						});
+					});
+
+
+            //var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            //(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            //g.src='//www.google-analytics.com/ga.js';
+            //s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+    </body>
+</html>

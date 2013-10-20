@@ -1,18 +1,17 @@
+{% include 'inc_header.html' %}
+
+<div class="row">
+<div class="col-lg-12">
+
+		<h1>Dog: {{ name }}</h1>
 
 
-<h1>Dog: {{ name }}</h1>
+		Type of Dog: {{ type }}
+		<hr />
 
+		<img alt="Embedded Image" src="data:image/png;base64,{{ img }}" />
 
-Type of Dog: {{ type }}
-<hr />
+</div>
+</div>
 
-
-<img alt="Embedded Image" src="data:image/png;base64,{{ img }}" />
-
-    
-    
-
-
-
-
-
+{% include 'inc_footer.html' %}

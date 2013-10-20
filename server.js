@@ -40,16 +40,42 @@ mongoose.connection
 
 /* Express and routing */
 
-var app = express();
+var app = express(),
+	swig = require("swig");
 
 app.set('port', port);
 app.set('ipaddr', ipaddr);
 
+
 // temp
 app.use('/mockjson', express.static(__dirname + '/mockjson'));
 
-//static page
+//static pages and assets
 app.use(express.static(__dirname + '/static'));
+
+
+//var layout = swig.compileFile('templates/layout.html');
+
+//app.get('/', function(req,res){res.render(swig.renderFile('./templates/index.html', {}))});    
+
+app.engine('html', swig.renderFile);
+
+app.set('view engine', 'html');
+app.set('views', __dirname + '/templates');
+
+// Swig will cache templates for you, but you can disable
+// // that and use Express's caching instead, if you like:
+app.set('view cache', false);
+// // To disable Swig's cache, do the following:
+swig.setDefaults({ cache: false });
+// // NOTE: You should always cache templates in a production environment.
+// // Don't leave both of these to `false` in production!
+app.get('/', function (req, res) {
+   res.render('index', { /* template locals context */ });
+   });
+app.get('/qrgen', function (req, res) {
+   res.render('qrgen', { /* template locals context */ });
+   });
 
 app.get('/pet', pet.get);    
 app.get('/pet/:id', pet.get);
@@ -58,10 +84,10 @@ app.get('/pet/:id/img', pet.getImage);
 app.post('/pet',pet.post);
 
 app.get('/*', function(req, res){
-  var body = 'Hello World';
+  var body = 'page not found';
   res.setHeader('Content-Type', 'text/plain');
   res.setHeader('Content-Length', body.length);
-  res.end(body);
+  res.end( 404, body);
 });
 
 app.listen(port, ipaddr, function(){
