@@ -5,7 +5,7 @@ var models = require("../models"),
     fs = require("fs"),
     promise = require('promised-io/promise');
 
-var get = function(req,res) {
+var getonedog = function(req,res) {
   /*  if (req.files === undefined ||
         req.files.image === undefined) {
         res.send(412);
@@ -15,6 +15,8 @@ var get = function(req,res) {
 
     var id = req.params.id,
         code = 500;
+    
+    console.log(id);
 
     promise.seq([function() {
         var p = promise.defer();
@@ -29,7 +31,7 @@ var get = function(req,res) {
     },function() {
         var p = promise.defer();
         
-        models.Pet.findOne({ _id : id},function(err,doc) {
+        models.Pet.find(function(err,doc) {
             if (err) {
                 code = 404;
                 p.reject();
@@ -60,6 +62,60 @@ var get = function(req,res) {
     });    
   
 }
+
+
+// get with no ID: give them a list of dogs
+
+var get = function(req,res) {
+    var id = req.params.id,
+    code = 500;
+    if (id != undefined) {
+        return getonedog(req,res);
+    }
+    return getdoglist(req,res);
+}
+
+var getdoglist = function(req,res) {
+    var code = 500;
+
+    promise.seq([function() {
+        var p = promise.defer();        
+        models.Pet.find(function(err,doc) {
+            if (err) {
+                code = 404;
+                p.reject();
+            } else {
+                p.resolve(doc);
+            }
+        });
+        return p;
+    }
+                 
+    ]).then(function(data) {
+    
+    var body = "";    
+    for (var i = 0; i < data.length; i++) {
+        if (data[i].image != undefined) {
+            
+        var base64_dog = new Buffer(data[i].image).toString('base64');
+        
+        body += "<h3>Dog: " + data[i].name + "</h3>";
+        body += "Type of Dog: " + data[i].type + "<br />";
+        body += "<img alt='Embedded Image' src='data:image/png;base64," + base64_dog + "' /> <hr />";
+        }
+    }
+       
+    res.setHeader('Content-type', 'text/html');
+    res.send(code,body);
+    res.end();
+
+    },function() { // Error handling is not defined.
+        res.send(code);
+        res.end();    
+    });    
+  
+}
+
 
 var post = function(req,res,next) {
     if (req.files === undefined ||

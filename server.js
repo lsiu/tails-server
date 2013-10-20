@@ -54,7 +54,6 @@ app.use('/mockjson', express.static(__dirname + '/mockjson'));
 app.use(express.static(__dirname + '/static'));
 
 
-//var layout = swig.compileFile('templates/layout.html');
 
 //app.get('/', function(req,res){res.render(swig.renderFile('./templates/index.html', {}))});    
 
@@ -77,9 +76,10 @@ app.get('/qrgen', function (req, res) {
    res.render('qrgen', { /* template locals context */ });
    });
 
-app.get('/pet', pet.get);    
-app.get('/pet/:id', pet.get);
-app.get('/pet/:id/img', pet.getImage);
+app.get('/pet', pet.get); // returns html page with list of dogs
+app.get('/pet/:id', pet.get); // returns html page with single dog
+
+app.get('/pet/:id/img', pet.getImage); // returns single image
 
 app.post('/pet',pet.post);
 

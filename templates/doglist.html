@@ -1,0 +1,27 @@
+
+
+
+
+
+
+{% for dog in data %}
+
+<h3>Dog: {{ dog.name }}</h3>
+
+
+Type of Dog: {{ dog.type }}
+
+
+
+<img alt="Embedded Image" src="data:image/png;base64,{{ dog.image }}" />
+
+Added: {{ dog.creationTime }}
+
+<hr />
+
+{% endfor %}
+
+
+
+
+
