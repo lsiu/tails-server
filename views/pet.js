@@ -69,8 +69,6 @@ var getonedog = function(req,res) {
 var get = function(req,res) {
     var id = req.params.id,
     code = 500;
-    console.log(id);
-
     if (id != undefined) {
         return getonedog(req,res);
     }
