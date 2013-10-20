@@ -105,9 +105,10 @@ var getdoglist = function(req,res) {
         }
     }
        
-    res.setHeader('Content-type', 'text/html');
-    res.send(code,body);
-    res.end();
+	 res.render(body);
+    //res.setHeader('Content-type', 'text/html');
+    //res.send(code,body);
+    //res.end();
 
     },function() { // Error handling is not defined.
         res.send(code);
