@@ -16,7 +16,7 @@ var getonedog = function(req,res) {
     var id = req.params.id,
         code = 500;
     
-    console.log(id);
+//    console.log(id);
 
     promise.seq([function() {
         var p = promise.defer();
@@ -70,51 +70,82 @@ var get = function(req,res) {
     var id = req.params.id,
     code = 500;
     if (id != undefined) {
-        return getonedog(req,res);
+        return getonedog(req,res); 
     }
+    if (res.header('Accept') == 'application/json') {
+        return gendoglistjson(req,res,null)
+    }        
     return getdoglist(req,res);
 }
 
-var getdoglist = function(req,res) {
+var getdoglist = function (req,res) {
+//    console.log("getdoglist")
+    var code = 200;
+
+    gendoglistjson(req,res, function (mydoglist) {
+        var body = swig.renderFile('templates/doglist.html', {mydoglist: mydoglist} );   
+        res.setHeader('Content-type', 'text/html');
+        res.send(code,body);
+        res.end();
+    }); 
+}
+
+
+var gendoglistjson = function(req,res,callback) {
+    var mydoglist = new Array();
     var code = 500;
+//    console.log("gendogjson");
 
     promise.seq([function() {
-        var p = promise.defer();        
-        models.Pet.find({ _id : id},function(err,doc) {
+        var p = promise.defer();
+            code = 200;
+            p.resolve();
+        return p;
+    },function() {
+        var p = promise.defer();
+        
+        models.Pet.find(function(err,doc) {
             if (err) {
                 code = 404;
                 p.reject();
             } else {
                 p.resolve(doc);
             }
+            
         });
+        
         return p;
     }
                  
     ]).then(function(data) {
     
-    var body = "";    
+    
+    var body = "";
     for (var i = 0; i < data.length; i++) {
+        //console.log("looping...")
         if (data[i].image != undefined) {
-            
-        var base64_dog = new Buffer(data[i].image).toString('base64');
-        
-        body += "<h3>Dog: " + data[i].name + "</h3>";
-        body += "Type of Dog: " + data[i].type + "<br />";
-        body += "<img alt='Embedded Image' src='data:image/png;base64," + base64_dog + "' /> <hr />";
+ //           console.log("found a dog");
+            var base64_dog = new Buffer(data[i].image).toString('base64');
+
+            mydoglist.push({name: data[i].name, type: data[i].type, image: base64_dog, creationTime: data[i].creationTime});
         }
     }
-       
-	 res.render(body);
-    //res.setHeader('Content-type', 'text/html');
-    //res.send(code,body);
-    //res.end();
+    if (callback != undefined) {
+//        console.log("running callback");
+        return callback(mydoglist);
+    }
+    else {
+//        console.log("returning json");
+
+        res.setHeader('Content-type', 'application/json');
+        res.send(code,body);
+        res.end();
+        return;
+    }    
 
     },function() { // Error handling is not defined.
-        res.send(code);
-        res.end();    
-    });    
-  
+        return;
+    });
 }
 
 
