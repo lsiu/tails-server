@@ -73,11 +73,16 @@ app.get('/', function (req, res) {
    res.render('index', { /* template locals context */ });
    });
 app.get('/qrgen', function (req, res) {
-   res.render('qrgen', { /* template locals context */ });
+   res.render('qrgen', { domain: req.headers.host });
    });
 
 app.get('/pet', pet.get); // returns html page with list of dogs
 app.get('/pet/:id', pet.get); // returns html page with single dog
+
+
+app.get('/good-dog/:id', function (req,res) { //gos to a form page
+   res.render('form_testimonial', {id: req.params.id });
+   });
 
 app.get('/pet/:id/img', pet.getImage); // returns single image
 

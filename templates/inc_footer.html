@@ -1,5 +1,6 @@
 
-      <hr>
+    <hr>
+
 		<footer>
         <p>&copy; Team Delta Force Super Star Hackers 2013</p>
       	</footer>
@@ -31,7 +32,7 @@
 							qrcode.clear();
 							dogqrcode.clear();
 							qrcode.makeCode(nowtimestring + '0' );
-							dogqrcode.makeCode(nowtimestring + '1');
+							dogqrcode.makeCode('http://{{ domain }}/pet/' + nowtimestring +  Math.floor((Math.random()*10)) );
 
 						});
 					});
