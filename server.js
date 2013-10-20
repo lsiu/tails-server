@@ -51,9 +51,10 @@ app.use('/mockjson', express.static(__dirname + '/mockjson'));
 //static page
 app.use(express.static(__dirname + '/static'));
 
-app.get('/pet', pet.get);    
-app.get('/pet/:id', pet.get);
-app.get('/pet/:id/img', pet.getImage);
+app.get('/pet', pet.get); // returns html page with list of dogs
+app.get('/pet/:id', pet.get); // returns html page with single dog
+
+app.get('/pet/:id/img', pet.getImage); // returns single image
 
 app.post('/pet',pet.post);
 
