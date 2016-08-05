@@ -1,5 +1,5 @@
 #Background
-Repository for project build in AngelHack Fall Oct 20, 2013
+Repository for project built during AngelHack Fall Oct 20, 2013
 
 tails-server
 ============
